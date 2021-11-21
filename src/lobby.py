@@ -13,7 +13,6 @@ class Lobby:
         self.mode = self.__ask_mode()
         self.users = tuple(i() for i in self.__modes[self.mode])
         self.game = Game(self.users, self.board)
-        self.game.start()
 
     __modes = {
         "USER": (lambda: HumanPlayer(SYMBOLS[0]), lambda: HumanPlayer(SYMBOLS[1])),
@@ -47,13 +46,13 @@ class Lobby:
             print("Ошибка ввода, введите верное значение")
 
     @classmethod
-    def new_game(cls) -> object:
-        return cls()
+    def revenge(cls) -> object:
+        if cls.__ask_new_game():
+            new_cls = cls()
+            new_cls.main()
+            return new_cls
 
-    def revenge(self):
-        while self.__ask_new_game():
-            self.new_game()
-            continue
-
-    # def main(self):
-    #     self.game.start()
+    def main(self):
+        game_result = self.game.start()
+        print(game_result)
+        self.revenge()

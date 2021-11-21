@@ -13,7 +13,6 @@ class Game:
     @Logger.log_game
     def start(self):
         winner = None
-        step_num = None
 
         for step_num, user in enumerate(cycle(self.users), 1):
             print(f"Ход {step_num} игрока: {user}")
@@ -21,14 +20,10 @@ class Game:
             self.__make_step(user, self.board)
 
             if self.board.board_match():
-                winner = user
-                print(GameResult(step_num, winner))
-                break
+                winner = user.name
+                return GameResult(step_num, winner)
             if step_num > 8:
-                print(GameResult(step_num, winner))
-                break
-
-        return winner.name, step_num, self.board.get_done_steps()
+                return GameResult(step_num, winner)
 
     @staticmethod
     def __make_step(user, board):

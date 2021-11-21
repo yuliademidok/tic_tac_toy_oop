@@ -20,7 +20,7 @@ class Logger:
             file = os.path.join(ROOT_DIR, "logs", FILES["GAME_LOG"])
 
             with open(file, "a", encoding="UTF-8") as file:
-                file.writelines(";".join(map(str, data)) + '\n')
+                file.writelines(";".join(map(str, data.__dict__.values())) + '\n')
 
             return data
         return wrap

@@ -13,6 +13,7 @@ class Lobby:
         self.mode = self.__ask_mode()
         self.users = tuple(i() for i in self.__modes[self.mode])
         self.game = Game(self.users, self.board)
+        self.game.start()
 
     __modes = {
         "USER": (lambda: HumanPlayer(SYMBOLS[0]), lambda: HumanPlayer(SYMBOLS[1])),
@@ -30,20 +31,29 @@ class Lobby:
                 mode_input = int(input(modes_string))
                 return user_modes[mode_input]
             except ValueError:
-                print(user_interface("invalid_mode_value"))
+                user_interface("invalid_mode_value")
             except KeyError:
-                print(user_interface("invalid_mode_key"))
+                user_interface("invalid_mode_key")
             continue
 
-    # @staticmethod
-    # def ask_new_game() -> bool:
-    #     variants = ('Y', 'N')
-    #
-    #     while True:
-    #         user_answer = input(f"Желаете начать новую игру? {'/'.join(variants)}").upper()
-    #         if user_answer in variants:
-    #             return user_answer == variants[0]
-    #         print("Ошибка ввода, введите верное значение")
+    @staticmethod
+    def __ask_new_game() -> bool:
+        variants = ('Y', 'N')
 
-    def main(self):
-        self.game.start()
+        while True:
+            user_answer = input(f"Желаете начать новую игру? {'/'.join(variants)}").upper()
+            if user_answer in variants:
+                return user_answer == variants[0]
+            print("Ошибка ввода, введите верное значение")
+
+    @classmethod
+    def new_game(cls) -> object:
+        return cls()
+
+    def revenge(self):
+        while self.__ask_new_game():
+            self.new_game()
+            continue
+
+    # def main(self):
+    #     self.game.start()

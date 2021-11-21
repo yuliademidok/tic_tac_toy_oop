@@ -41,6 +41,9 @@ class Board:
     def get_free_cells(self) -> set:
         return self.__free_steps
 
+    def get_done_steps(self) -> dict:
+        return dict(self._done_steps)
+
     def __str__(self):
         separator = '#' * self.__size * 2 + '##'
         title_row = f'  {" ".join(map(str, list(range(self.__size))))}'

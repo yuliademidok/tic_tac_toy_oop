@@ -1,6 +1,7 @@
 from itertools import cycle
 
 from src.game_result import GameResult
+from src.logger import Logger
 from src.templates import user_interface
 
 
@@ -9,10 +10,10 @@ class Game:
         self.users = users
         self.board = board
 
+    @Logger.log_game
     def start(self):
         winner = None
         step_num = None
-        steps = set()
 
         for step_num, user in enumerate(cycle(self.users), 1):
             print(f"Ход {step_num} игрока: {user}")
@@ -27,7 +28,7 @@ class Game:
                 print(GameResult(step_num, winner))
                 break
 
-        return step_num, steps, winner
+        return winner.name, step_num, self.board.get_done_steps()
 
     @staticmethod
     def __make_step(user, board):
